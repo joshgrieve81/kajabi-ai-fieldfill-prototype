@@ -27,7 +27,9 @@ This prototype now copies and uses that design system directly instead of approx
 - Matches the light Kajabi-style sidebar and 48px global header
 - Uses the same dark Cofounder-style AI drawer treatment
 - Uses the course-builder card/form layout conventions
-- Keeps the concept focused on FieldFill: detected fields, generate/fill actions, field readiness, and pause-before-save safety
+- Keeps the concept focused on FieldFill: detected fields, context intake, generate/fill actions, field readiness, and pause-before-save safety
+- If the user clicks **Fill all fields** with no brief/context, FieldFill now asks for context instead of magically filling fields
+- Includes a **Use sample creator brief** action so the demo still has a fast path
 
 ## Live concept
 
@@ -39,4 +41,4 @@ https://joshgrieve81.github.io/kajabi-ai-fieldfill-prototype/
 
 ## Concept positioning
 
-> Cofounder can help generate and reason about content. FieldFill performs the operational step: identify fields in the Kajabi admin UI, populate them, and pause before Save for explicit human approval.
+> Cofounder can help generate and reason about content. FieldFill performs the operational step: identify fields in the Kajabi admin UI, use source context from a brief/outline/transcript/Cofounder draft, populate matching fields, and pause before Save for explicit human approval.

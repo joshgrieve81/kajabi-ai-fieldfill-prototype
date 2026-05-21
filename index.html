@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kajabi AI Field Assistant — Concept Prototype</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f7f6f3;
+      color: #191919;
+    }
+    .app { display: grid; grid-template-columns: 248px 1fr 390px; min-height: 100vh; }
+    .sidebar {
+      background: #171717;
+      color: #f6f2ea;
+      padding: 22px 16px;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .logo { display:flex; align-items:center; gap:10px; font-weight:750; letter-spacing:-.03em; font-size:20px; margin-bottom:28px; }
+    .logo-mark { width:32px; height:32px; border-radius:10px; background:linear-gradient(135deg,#fff4cf,#caa56a); color:#111; display:grid; place-items:center; font-weight:900; }
+    .nav-section { color:#9b968f; font-size:11px; text-transform:uppercase; letter-spacing:.12em; margin:22px 0 8px; }
+    .nav-item { padding:10px 12px; border-radius:10px; display:flex; gap:10px; align-items:center; color:#d9d5cf; font-size:14px; margin:2px 0; }
+    .nav-item.active { background:#2b2926; color:#fff; box-shadow: inset 3px 0 0 #d7b56d; }
+    .main { padding: 24px 34px 44px; overflow:auto; }
+    .crumbs { color:#7a756d; font-size:13px; margin-bottom:18px; }
+    .topbar { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:22px; }
+    h1 { margin:0; font-size:30px; letter-spacing:-.04em; }
+    .sub { margin-top:6px; color:#6e6960; font-size:14px; }
+    .pill { display:inline-flex; align-items:center; gap:8px; border:1px solid #ded8cd; background:#fff; border-radius:999px; padding:8px 12px; font-size:13px; color:#554f47; }
+    .tabs { display:flex; gap:6px; border-bottom:1px solid #ded8cd; margin:18px 0 24px; }
+    .tab { padding:12px 14px; color:#6f6961; font-size:14px; border-bottom:2px solid transparent; }
+    .tab.active { color:#161616; border-color:#151515; font-weight:650; }
+    .panel { background:#fff; border:1px solid #e5dfd4; border-radius:18px; box-shadow:0 10px 30px rgba(50,43,32,.05); margin-bottom:18px; overflow:hidden; }
+    .panel-head { padding:18px 20px; border-bottom:1px solid #eee8df; display:flex; justify-content:space-between; align-items:center; }
+    .panel-title { font-weight:760; letter-spacing:-.02em; }
+    .panel-note { color:#8a8379; font-size:13px; }
+    .form { padding:20px; display:grid; gap:18px; }
+    label { display:block; font-size:13px; font-weight:680; color:#3d3934; margin-bottom:7px; }
+    input, textarea, select {
+      width:100%; border:1px solid #dcd6cc; background:#fffdf9; border-radius:12px; padding:12px 13px;
+      font: inherit; color:#1d1b18; outline:none; transition:.18s ease;
+    }
+    textarea { min-height:96px; resize:vertical; line-height:1.45; }
+    .rich { min-height:150px; }
+    input:focus, textarea:focus, select:focus { border-color:#b28b45; box-shadow:0 0 0 4px rgba(178,139,69,.13); }
+    .field.filled input, .field.filled textarea { background:#fffaf0; border-color:#d1aa60; animation: glow .7s ease; }
+    @keyframes glow { from { box-shadow:0 0 0 0 rgba(209,170,96,.5); } to { box-shadow:0 0 0 10px rgba(209,170,96,0); } }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .savebar { position:sticky; bottom:0; background:rgba(247,246,243,.86); backdrop-filter: blur(12px); padding:14px 0 0; display:flex; justify-content:flex-end; gap:10px; }
+    button { border:0; border-radius:12px; padding:11px 14px; font-weight:720; cursor:pointer; transition:.18s ease; }
+    .secondary { background:#ebe5db; color:#2c2925; }
+    .primary { background:#1d1b18; color:white; }
+    .gold { background:#c69a4d; color:#15110a; }
+    button:hover { transform:translateY(-1px); filter:brightness(.98); }
+    .assistant { background:#fbfaf7; border-left:1px solid #ded8cd; padding:18px; display:flex; flex-direction:column; gap:14px; }
+    .assistant-card { background:#fff; border:1px solid #e5dfd4; border-radius:18px; box-shadow:0 10px 28px rgba(50,43,32,.06); overflow:hidden; }
+    .ai-head { padding:16px; display:flex; gap:12px; align-items:center; border-bottom:1px solid #eee8df; }
+    .spark { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:#171717; color:#f3cf80; }
+    .ai-title { font-weight:800; letter-spacing:-.025em; }
+    .ai-small { color:#766f65; font-size:12px; margin-top:2px; }
+    .chat { padding:16px; display:grid; gap:12px; }
+    .bubble { border-radius:16px; padding:12px; font-size:13px; line-height:1.42; }
+    .user { background:#f1ece3; color:#332f28; }
+    .ai { background:#191919; color:#f8f4ec; }
+    .detected { display:grid; gap:8px; margin-top:8px; }
+    .check { display:flex; align-items:center; justify-content:space-between; padding:9px 10px; background:#f9f5ed; border:1px solid #efe5d4; border-radius:12px; font-size:12px; color:#4d463d; }
+    .check span:last-child { color:#9b7431; font-weight:800; }
+    .promptbox { padding:14px; border-top:1px solid #eee8df; }
+    .promptbox textarea { min-height:112px; background:#fffdf9; }
+    .actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+    .full { grid-column:1 / -1; }
+    .status { border-radius:14px; background:#f0ece4; padding:12px; color:#5b554d; font-size:13px; line-height:1.4; }
+    .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(30px); background:#171717; color:#fff7e8; padding:12px 16px; border-radius:999px; opacity:0; transition:.25s ease; box-shadow:0 14px 40px rgba(0,0,0,.25); font-size:14px; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    @media (max-width:1100px){ .app{grid-template-columns:220px 1fr}.assistant{grid-column:1/-1;border-left:0;border-top:1px solid #ded8cd}.row{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-mark">K</div><div>Kajabi</div></div>
+      <div class="nav-section">Create</div>
+      <div class="nav-item active">▣ Products</div>
+      <div class="nav-item">▤ Courses</div>
+      <div class="nav-item">◈ Coaching</div>
+      <div class="nav-section">Sell</div>
+      <div class="nav-item">◉ Offers</div>
+      <div class="nav-item">▧ Forms</div>
+      <div class="nav-item">◇ Payments</div>
+      <div class="nav-section">Website</div>
+      <div class="nav-item">▥ Pages</div>
+      <div class="nav-item">⚙ Settings</div>
+    </aside>
+
+    <main class="main">
+      <div class="crumbs">Products / Digital Course / Lessons / Settings</div>
+      <div class="topbar">
+        <div>
+          <h1>Lesson settings</h1>
+          <div class="sub">Prototype: AI fills the Kajabi fields Cofounder currently cannot directly edit.</div>
+        </div>
+        <div class="pill">Draft changes • not saved</div>
+      </div>
+      <div class="tabs">
+        <div class="tab">Content</div><div class="tab active">Settings</div><div class="tab">SEO & Sharing</div><div class="tab">Automations</div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head"><div><div class="panel-title">Basic information</div><div class="panel-note">Visible to students inside the course experience.</div></div></div>
+        <div class="form">
+          <div class="field" data-field="title"><label>Lesson title</label><input value="" placeholder="Example: The 5-Minute Morning Reset" /></div>
+          <div class="field" data-field="description"><label>Short description</label><textarea placeholder="Briefly explain what students will learn in this lesson."></textarea></div>
+          <div class="row">
+            <div class="field"><label>Publish status</label><select><option>Draft</option><option>Published</option></select></div>
+            <div class="field" data-field="duration"><label>Estimated duration</label><input placeholder="8 minutes" /></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><div><div class="panel-title">Lesson body</div><div class="panel-note">Rich text content for the course lesson.</div></div></div>
+        <div class="form">
+          <div class="field" data-field="body"><label>Lesson content</label><textarea class="rich" placeholder="Write lesson content, key takeaways, prompts, or homework here."></textarea></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><div><div class="panel-title">SEO and sharing</div><div class="panel-note">Usually buried fields that are easy to forget.</div></div></div>
+        <div class="form">
+          <div class="field" data-field="seoTitle"><label>SEO title</label><input placeholder="Search result title" /></div>
+          <div class="field" data-field="seoDescription"><label>SEO description</label><textarea placeholder="Search/social preview description"></textarea></div>
+        </div>
+      </section>
+
+      <div class="savebar"><button class="secondary" onclick="resetDemo()">Reset demo</button><button class="primary" onclick="toast('Prototype paused before save — human approval required')">Save draft</button></div>
+    </main>
+
+    <aside class="assistant">
+      <div class="assistant-card">
+        <div class="ai-head"><div class="spark">✦</div><div><div class="ai-title">FieldFill Assistant</div><div class="ai-small">Separate AI agent connected to Kajabi tools</div></div></div>
+        <div class="chat">
+          <div class="bubble user">Create a lesson settings page for a short module about building a morning clarity ritual for busy founders.</div>
+          <div class="bubble ai">I found 6 editable fields on this page. I can draft optimized copy, populate them, and stop before saving.</div>
+          <div class="detected">
+            <div class="check">Lesson title <span>ready</span></div>
+            <div class="check">Short description <span>ready</span></div>
+            <div class="check">Lesson body <span>ready</span></div>
+            <div class="check">Duration <span>ready</span></div>
+            <div class="check">SEO title <span>ready</span></div>
+            <div class="check">SEO description <span>ready</span></div>
+          </div>
+        </div>
+        <div class="promptbox">
+          <textarea id="brief">Audience: overwhelmed founders and creators. Tone: calm, direct, premium. Outcome: help them design a 5-minute morning ritual that clarifies the day's top priority.</textarea>
+          <div class="actions">
+            <button class="gold full" onclick="fillFields()">Fill all visible fields</button>
+            <button class="secondary" onclick="previewPlan()">Preview mapping</button>
+            <button class="primary" onclick="toast('In a real build, this would call browser/MCP tools')">Run agent</button>
+          </div>
+        </div>
+      </div>
+      <div class="status" id="status"><strong>Concept:</strong> Cofounder can draft content, but this separate assistant operates the Kajabi admin UI and fills fields that native AI cannot touch.</div>
+    </aside>
+  </div>
+  <div id="toast" class="toast"></div>
+
+<script>
+  const values = {
+    title: 'The 5-Minute Morning Clarity Ritual',
+    description: 'A simple daily reset that helps founders choose the one priority that matters before the day becomes reactive.',
+    duration: '5–8 minutes',
+    body: 'In this lesson, you will build a repeatable morning ritual designed for busy founders and creators.\n\n1. Start with a 60-second brain dump of everything competing for attention.\n2. Circle the one outcome that would make today feel successful.\n3. Write the first concrete action that moves that outcome forward.\n4. Protect a 25-minute focus block before checking messages.\n\nBy the end, you will have a lightweight clarity practice you can repeat every morning without adding complexity to your schedule.',
+    seoTitle: '5-Minute Morning Clarity Ritual for Founders',
+    seoDescription: 'Learn a calm, practical morning ritual for choosing your top priority, reducing reactivity, and starting the day with focused momentum.'
+  };
+  function fillFields(){
+    Object.entries(values).forEach(([key, value], i) => {
+      setTimeout(() => {
+        const field = document.querySelector(`[data-field="${key}"]`);
+        const input = field && field.querySelector('input, textarea');
+        if(input){ input.value = value; field.classList.add('filled'); }
+      }, i * 260);
+    });
+    document.getElementById('status').innerHTML = '<strong>Applied:</strong> 6 fields populated. Next step: show a screenshot diff and ask for approval before clicking Save.';
+    toast('AI populated 6 fields and paused before save');
+  }
+  function previewPlan(){
+    document.getElementById('status').innerHTML = '<strong>Preview mapping:</strong> outline → title, positioning → description, lesson steps → body, outcome keywords → SEO fields.';
+    toast('Previewing field mapping');
+  }
+  function resetDemo(){
+    document.querySelectorAll('[data-field]').forEach(field => {
+      const input = field.querySelector('input, textarea');
+      if(input) input.value = '';
+      field.classList.remove('filled');
+    });
+    document.getElementById('status').innerHTML = '<strong>Concept:</strong> Cofounder can draft content, but this separate assistant operates the Kajabi admin UI and fills fields that native AI cannot touch.';
+    toast('Demo reset');
+  }
+  function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>

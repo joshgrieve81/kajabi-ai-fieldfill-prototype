@@ -1,0 +1,103 @@
+/* Skeleton loaders must match the approximate shape of the content
+   they replace to reduce perceived layout shift. */
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background-color: var(--color-skeleton-base);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-skeleton-base)    0%,
+    var(--color-skeleton-highlight) 40%,
+    var(--color-skeleton-highlight) 60%,
+    var(--color-skeleton-base)    100%
+  );
+  background-size: 800px 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: var(--radius-sm);
+  display: block;
+}
+
+/* ─── Preset shapes ──────────────────────────────────────────────── */
+
+/* Text lines */
+.skeleton-text {
+  height: 14px;
+  width: 100%;
+  border-radius: var(--radius-sm);
+}
+.skeleton-text-sm {
+  height: 12px;
+  border-radius: var(--radius-sm);
+}
+.skeleton-text-lg {
+  height: 18px;
+  border-radius: var(--radius-sm);
+}
+.skeleton-heading {
+  height: 24px;
+  border-radius: var(--radius-sm);
+}
+
+/* Common widths — combine with skeleton-text */
+.skeleton-w-25 { width: 25%; }
+.skeleton-w-33 { width: 33%; }
+.skeleton-w-50 { width: 50%; }
+.skeleton-w-66 { width: 66%; }
+.skeleton-w-75 { width: 75%; }
+
+/* Pill shape */
+.skeleton-pill {
+  height: 20px;
+  width: 72px;
+  border-radius: var(--radius-full);
+}
+
+/* Avatar / thumbnail */
+.skeleton-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.skeleton-avatar-lg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+/* Thumbnail (16:9 ratio via padding-bottom on wrapper) */
+.skeleton-thumb {
+  height: 120px;
+  width: 100%;
+  border-radius: var(--radius);
+}
+
+/* Button shape */
+.skeleton-btn {
+  height: 36px;
+  width: 96px;
+  border-radius: var(--radius);
+}
+
+/* ─── Row template (table or list item) ──────────────────────────── */
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+}
+
+/* ─── Card template ──────────────────────────────────────────────── */
+.skeleton-card {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}

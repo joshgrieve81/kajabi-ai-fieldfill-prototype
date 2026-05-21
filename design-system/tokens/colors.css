@@ -1,0 +1,85 @@
+:root {
+  /* ─── Navigation surface (light sidebar — matches actual Kajabi) ── */
+  --color-nav-bg:              #FFFFFF;
+  --color-nav-item:            #4B5563;
+  --color-nav-item-hover:      #111827;
+  --color-nav-item-active:     #111827;
+  --color-nav-item-bg-hover:   #F3F4F6;
+  --color-nav-item-bg-active:  #F3F4F6;
+  --color-nav-divider:         #E5E7EB;
+  --color-nav-section-label:   #9CA3AF;
+
+  /* ─── App surfaces ───────────────────────────────────────────── */
+  --color-surface-app:         #F2F4F7;
+  --color-surface-card:        #FFFFFF;
+  --color-surface-card-hover:  #FAFBFF;
+  --color-surface-input:       #FFFFFF;
+  --color-surface-input-disabled: #F9FAFB;
+  --color-surface-overlay:     rgba(17, 24, 39, 0.55);
+  --color-surface-popover:     #FFFFFF;
+
+  /* ─── Brand / primary interactive ───────────────────────────── */
+  --color-brand:               #5046E5;
+  --color-brand-hover:         #3F35D4;
+  --color-brand-active:        #3229B9;
+  --color-brand-muted:         #EEEDFC;
+  --color-brand-muted-hover:   #E0DFFA;
+
+  /* ─── Button: primary (near-black pill — matches Kajabi UI) ──── */
+  --color-btn-primary:         #1F2328;
+  --color-btn-primary-hover:   #2C3138;
+  --color-btn-primary-active:  #14171A;
+
+  /* ─── Status: success ────────────────────────────────────────── */
+  --color-success:             #0B7D48;
+  --color-success-text:        #065F35;
+  --color-success-bg:          #ECFDF5;
+  --color-success-border:      #6EE7B7;
+
+  /* ─── Status: error ──────────────────────────────────────────── */
+  --color-error:               #C62828;
+  --color-error-text:          #991B1B;
+  --color-error-bg:            #FFF1F1;
+  --color-error-border:        #FECACA;
+
+  /* ─── Status: warning ────────────────────────────────────────── */
+  --color-warning:             #C25B00;
+  --color-warning-text:        #92400E;
+  --color-warning-bg:          #FFF8EE;
+  --color-warning-border:      #FCD380;
+
+  /* ─── Status: info ───────────────────────────────────────────── */
+  --color-info:                #1A5CB7;
+  --color-info-text:           #1E40AF;
+  --color-info-bg:             #EFF6FF;
+  --color-info-border:         #BFDBFE;
+
+  /* ─── Status: neutral (archived / inactive) ──────────────────── */
+  --color-neutral-status:      #4B5563;
+  --color-neutral-status-bg:   #F3F4F6;
+  --color-neutral-status-border: #D1D5DB;
+
+  /* ─── Text ───────────────────────────────────────────────────── */
+  --color-text:                #111827;
+  --color-text-secondary:      #4B5563;
+  --color-text-muted:          #6B7280; /* #9CA3AF failed 4.5:1 on white; #6B7280 ≈ 5.25:1 */
+  --color-text-placeholder:    #9CA3AF; /* placeholder text is WCAG-exempt as incidental text */
+  --color-text-disabled:       #D1D5DB;
+  --color-text-inverse:        #FFFFFF;
+  --color-text-link:           #5046E5;
+  --color-text-link-hover:     #3F35D4;
+  --color-text-error:          #C62828;
+  --color-text-success:        #0B7D48;
+
+  /* ─── Border ─────────────────────────────────────────────────── */
+  --color-border:              #E5E7EB;
+  --color-border-strong:       #D1D5DB;
+  --color-border-focus:        #5046E5;
+  --color-border-error:        #C62828;
+  --color-border-input:        #D1D5DB;
+  --color-border-input-hover:  #9CA3AF;
+
+  /* ─── Skeleton shimmer ───────────────────────────────────────── */
+  --color-skeleton-base:       #EFF1F5;
+  --color-skeleton-highlight:  #FAFBFC;
+}

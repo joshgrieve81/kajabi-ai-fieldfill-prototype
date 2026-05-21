@@ -1,0 +1,9 @@
+:root {
+  --radius-sm:   4px;       /* tight inline elements: badges, micro chips */
+  --radius:      6px;       /* inputs, buttons, pills */
+  --radius-md:   8px;       /* cards, dropdowns */
+  --radius-lg:   12px;      /* modals, drawers, popovers */
+  --radius-xl:   16px;      /* prominent featured cards */
+  --radius-2xl:  24px;      /* large rounded surfaces */
+  --radius-full: 9999px;    /* capsule / fully rounded */
+}

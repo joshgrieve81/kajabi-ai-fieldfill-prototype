@@ -1,0 +1,125 @@
+/* Row-level kebab menu (•••).
+   Per design.md: destructive actions last, styled in error color. */
+
+.row-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.row-menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-ui);
+  transition: background-color 100ms ease, border-color 100ms ease, color 100ms ease;
+  opacity: 0;
+}
+
+/* Show trigger on row hover / focus, or when menu is open */
+tr:hover .row-menu-trigger,
+tr:focus-within .row-menu-trigger,
+.row-menu-trigger:focus-visible,
+.row-menu.is-open .row-menu-trigger {
+  opacity: 1;
+}
+
+.row-menu-trigger:hover {
+  background-color: var(--color-surface-app);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+.row-menu-trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  opacity: 1;
+}
+.row-menu.is-open .row-menu-trigger {
+  background-color: var(--color-surface-app);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+/* ─── Dropdown panel ─────────────────────────────────────────────── */
+.row-menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-1));
+  min-width: 160px;
+  background-color: var(--color-surface-popover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  padding: var(--space-1);
+  font-family: var(--font-family-ui);
+
+  display: none;
+}
+
+.row-menu.is-open .row-menu-panel {
+  display: block;
+  animation: row-menu-in 120ms ease forwards;
+}
+
+@keyframes row-menu-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── Items ──────────────────────────────────────────────────────── */
+.row-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 80ms ease;
+  text-decoration: none;
+}
+.row-menu-item:hover {
+  background-color: var(--color-surface-app);
+}
+.row-menu-item:focus-visible {
+  outline: none;
+  background-color: var(--color-surface-app);
+  box-shadow: inset 0 0 0 2px var(--color-border-focus);
+}
+.row-menu-item svg {
+  width: 15px;
+  height: 15px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+/* Separator before destructive group */
+.row-menu-separator {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-1) calc(-1 * var(--space-1));
+}
+
+/* Destructive item — always last, separated */
+.row-menu-item.is-destructive {
+  color: var(--color-error);
+}
+.row-menu-item.is-destructive:hover {
+  background-color: var(--color-error-bg);
+}
+.row-menu-item.is-destructive svg {
+  color: var(--color-error);
+}

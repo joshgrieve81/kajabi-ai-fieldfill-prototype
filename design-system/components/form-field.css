@@ -1,0 +1,156 @@
+/* Per design.md: validate on blur, inline errors below field,
+   aria-describedby links error message to input. */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-family-ui);
+}
+
+.field-label {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* Required marker — always accompanied by a legend at form level */
+.field-label .field-required {
+  color: var(--color-error);
+  font-size: var(--font-size-small);
+  line-height: 1;
+}
+
+.field-hint {
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+/* ─── Input / Textarea / Select ──────────────────────────────────── */
+.field-input,
+.field-textarea,
+.field-select {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--space-3);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text);
+  background-color: var(--color-surface-input);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius);
+  transition: border-color 100ms ease, box-shadow 100ms ease;
+  appearance: none;
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.field-input:hover,
+.field-textarea:hover,
+.field-select:hover {
+  border-color: var(--color-border-input-hover);
+}
+
+.field-input:focus,
+.field-textarea:focus,
+.field-select:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+.field-input:disabled,
+.field-textarea:disabled,
+.field-select:disabled {
+  background-color: var(--color-surface-input-disabled);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  border-color: var(--color-border);
+}
+
+.field-textarea {
+  height: auto;
+  padding: var(--space-2) var(--space-3);
+  resize: vertical;
+  min-height: 80px;
+  line-height: var(--line-height-normal);
+}
+
+/* Select arrow */
+.field-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); /* #6B7280 meets 3:1 non-text contrast (WCAG 1.4.11) */
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  padding-right: var(--space-8);
+  cursor: pointer;
+}
+
+/* ─── Error state ────────────────────────────────────────────────── */
+.field.is-error .field-input,
+.field.is-error .field-textarea,
+.field.is-error .field-select {
+  border-color: var(--color-border-error);
+}
+.field.is-error .field-input:focus,
+.field.is-error .field-textarea:focus,
+.field.is-error .field-select:focus {
+  box-shadow: var(--shadow-focus-error);
+}
+
+.field-error {
+  display: none;
+  font-size: var(--font-size-small);
+  color: var(--color-text-error);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+.field.is-error .field-error {
+  display: block;
+}
+
+/* ─── Input group (prefix / suffix) ─────────────────────────────── */
+.field-input-group {
+  display: flex;
+  align-items: stretch;
+}
+.field-input-group .field-input {
+  flex: 1;
+  min-width: 0;
+}
+.field-input-group .field-input:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+}
+.field-input-group .field-input:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.field-addon {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  background-color: var(--color-surface-app);
+  border: 1px solid var(--color-border-input);
+  font-size: var(--font-size-body);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.field-addon:first-child {
+  border-right: none;
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.field-addon:last-child {
+  border-left: none;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}

@@ -1,0 +1,99 @@
+/* ── Tooltip ──────────────────────────────────────────────────────────
+   Usage: wrap the trigger in .tooltip-anchor, place .tooltip inside it.
+
+   <div class="tooltip-anchor">
+     <button>Trigger</button>
+     <div class="tooltip" role="tooltip">
+       <p class="tooltip-title">Title</p>
+       <p class="tooltip-body">Description text.</p>
+     </div>
+   </div>
+──────────────────────────────────────────────────────────────────── */
+
+.tooltip-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Base tooltip — positioned below trigger, left-aligned by default */
+.tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  max-width: 280px;
+  background: #1F2328;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 130ms ease, transform 130ms ease;
+  z-index: var(--z-tooltip);
+  white-space: normal;
+}
+
+.tooltip-anchor:hover .tooltip,
+.tooltip-anchor:focus-within .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Position modifiers ──────────────────────────────────────────── */
+
+/* Center-aligned below trigger */
+.tooltip--center {
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+.tooltip-anchor:hover .tooltip--center,
+.tooltip-anchor:focus-within .tooltip--center {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Right-aligned (tooltip right edge = trigger right edge) */
+.tooltip--right {
+  left: auto;
+  right: 0;
+}
+
+/* Above trigger */
+.tooltip--above {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform: translateY(4px);
+}
+.tooltip-anchor:hover .tooltip--above,
+.tooltip-anchor:focus-within .tooltip--above {
+  transform: translateY(0);
+}
+
+/* ── Content ─────────────────────────────────────────────────────── */
+.tooltip-title {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: #FFFFFF;
+  margin: 0 0 4px;
+  line-height: var(--line-height-snug);
+}
+
+.tooltip-body {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-small);
+  color: #C0C4CC;
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+/* Simple single-line tooltip (no title/body, just .tooltip text) */
+.tooltip-simple {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-small);
+  color: #FFFFFF;
+  white-space: nowrap;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+}

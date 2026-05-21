@@ -1,45 +1,42 @@
 # Kajabi FieldFill Agent — Concept Prototype
 
-Live concept prototype for a separate AI/MCP/browser agent that can populate Kajabi admin fields that native Cofounder-style AI cannot directly edit.
+This prototype has been rebuilt to match the populated `creator-platform-starter` repo more closely.
 
-## Current version
+## Source reference used
 
-This version was restyled from the previously created Kajabi SaaS design system notes in `/tmp/kajabi/DESIGN.md`:
-
-- Warm gray app canvas: `#F7F7F5`
-- White cards and subtle borders
-- Light persistent left sidebar
-- Black primary CTAs
-- Purple AI/co-pilot treatment
-- Card-based SaaS settings layout
-- Human-in-the-loop save safety
-
-## Important inspection note
-
-The referenced repo `joshgrieve81/creator-platform-starter` is currently public but appears empty on GitHub: no branches, no commits, and no files were available to clone at inspection time. Because of that, this prototype uses the locally available Kajabi-inspired design-system artifact from the earlier Cursor/Kajabi design work rather than copying code from that repo.
-
-## What it demonstrates
-
-- A Kajabi-inspired product/course lesson settings page
-- A right-side AI assistant panel
-- Field detection/readiness state
-- Generate + fill interaction
-- Section-specific fill actions
-- A review-before-save flow
-
-## How to view locally
-
-```bash
-cd /root/kajabi-ai-fieldfill-prototype
-python3 -m http.server 4173
-```
-
-Then open:
+Inspected repo:
 
 ```text
-http://127.0.0.1:4173
+https://github.com/joshgrieve81/creator-platform-starter
+```
+
+The repo now contains:
+
+- `design-system/` tokenized vanilla CSS system
+- `design-system/shell.js` shared Kajabi-like app shell and dark AI drawer
+- `prototypes/course-builder.html`
+- `prototypes/dashboard.html`
+- `prototypes/email-campaign.html`
+- Screenshot references
+
+This prototype now copies and uses that design system directly instead of approximating the styling from memory.
+
+## What changed
+
+- Uses the actual `design-system/index.css` and shell patterns from the populated repo
+- Matches the light Kajabi-style sidebar and 48px global header
+- Uses the same dark Cofounder-style AI drawer treatment
+- Uses the course-builder card/form layout conventions
+- Keeps the concept focused on FieldFill: detected fields, generate/fill actions, field readiness, and pause-before-save safety
+
+## Live concept
+
+GitHub Pages:
+
+```text
+https://joshgrieve81.github.io/kajabi-ai-fieldfill-prototype/
 ```
 
 ## Concept positioning
 
-> Cofounder can help write content. FieldFill performs the operational step: it identifies fields in the Kajabi admin UI, maps generated content to each field, populates the page, and pauses before save for human approval.
+> Cofounder can help generate and reason about content. FieldFill performs the operational step: identify fields in the Kajabi admin UI, populate them, and pause before Save for explicit human approval.

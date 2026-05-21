@@ -1,0 +1,145 @@
+/* Uses the native <dialog> element for accessibility.
+   JS calls dialog.showModal() / dialog.close().
+   Focus trap and Escape key are handled natively by <dialog>. */
+
+dialog.modal {
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-card);
+  box-shadow: var(--shadow-xl);
+  max-width: min(480px, calc(100vw - var(--space-8)));
+  width: 100%;
+  max-height: calc(100dvh - var(--space-8));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-family: var(--font-family-ui);
+}
+
+dialog.modal::backdrop {
+  background-color: var(--color-surface-overlay);
+  animation: modal-backdrop-in 180ms ease forwards;
+}
+
+dialog.modal[open] {
+  animation: modal-in 200ms ease forwards;
+}
+
+dialog.modal.modal-exit {
+  animation: modal-out 160ms ease forwards;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-6) var(--space-4);
+}
+
+.modal-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-icon svg { width: 18px; height: 18px; }
+
+.modal-icon--destructive {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.modal-icon--info {
+  background-color: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+.modal-header-text { flex: 1; min-width: 0; }
+
+.modal-title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0 0 var(--space-1);
+  line-height: var(--line-height-snug);
+}
+
+.modal-subtitle {
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.modal-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  margin: -2px -4px 0 0;
+  transition: background-color 100ms ease, color 100ms ease;
+}
+.modal-close:hover {
+  background-color: var(--color-surface-app);
+  color: var(--color-text);
+}
+.modal-close:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.modal-body {
+  padding: 0 var(--space-6) var(--space-5);
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+.modal-body p { margin: 0; }
+.modal-body p + p { margin-top: var(--space-3); }
+
+.modal-footer {
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Per design.md: default focus goes to cancel, not destructive action */
+.modal-footer .btn-secondary { order: -1; }
+
+/* ─── Animations ─────────────────────────────────────────────────── */
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes modal-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(4px) scale(0.98); }
+}
+
+/* ─── Mobile: full-screen ────────────────────────────────────────── */
+@media (max-width: 600px) {
+  dialog.modal {
+    max-width: 100%;
+    max-height: 92dvh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    position: fixed;
+    bottom: 0;
+    margin: 0 auto auto;
+  }
+}

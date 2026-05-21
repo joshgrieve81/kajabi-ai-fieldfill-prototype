@@ -1,0 +1,251 @@
+/* ─── App root — ROW: app-main | ai-drawer side by side ─────────── */
+.app {
+  display: flex;
+  flex-direction: row;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--color-surface-card);
+}
+
+/* Wraps header + app-body; shrinks when drawer opens */
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─── Full-width global header ───────────────────────────────────── */
+.app-header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  background: var(--color-surface-card);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+  z-index: var(--z-sticky);
+}
+
+/* Brand — left side of header */
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  text-decoration: none;
+}
+.app-brand-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background-color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.app-brand-icon svg { width: 13px; height: 13px; color: #FFFFFF; }
+.app-brand-name {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  letter-spacing: var(--letter-spacing-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Controls — right side of header */
+.app-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+.app-ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background-color 100ms ease;
+}
+.app-ctrl-btn:hover { background: var(--color-surface-app); }
+.app-ctrl-btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.app-ctrl-btn svg { width: 18px; height: 18px; display: block; }
+
+.app-user-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  transition: background-color 100ms ease;
+}
+.app-user-btn:hover { background: var(--color-surface-app); }
+.app-user-btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.app-user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-brand);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── Two-column body ────────────────────────────────────────────── */
+.app-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ─── Left nav rail ──────────────────────────────────────────────── */
+.admin-nav {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--color-nav-bg);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.admin-nav::-webkit-scrollbar { display: none; }
+
+.nav-body {
+  flex: 1;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Nav items — icon + label + optional chevron */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-3);
+  border-radius: var(--radius);
+  font-family: var(--font-family-ui);
+  font-size: 13px;
+  font-weight: var(--font-weight-normal);
+  color: var(--color-nav-item);
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  line-height: var(--line-height-snug);
+  transition: background-color 80ms ease, color 80ms ease;
+}
+.nav-item:hover {
+  background: var(--color-nav-item-bg-hover);
+  color: var(--color-nav-item-hover);
+}
+.nav-item.is-active {
+  background: var(--color-nav-item-bg-active);
+  color: var(--color-nav-item-active);
+  font-weight: var(--font-weight-medium);
+}
+.nav-item:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--color-border-focus);
+}
+
+/* Icon (left) */
+.nav-item-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+  opacity: 0.65;
+}
+.nav-item:hover .nav-item-icon,
+.nav-item.is-active .nav-item-icon { opacity: 1; }
+
+/* Label — flex:1 pushes chevron to the far right */
+.nav-item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Chevron (right) on expandable items */
+.nav-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  display: block;
+  opacity: 0.7;
+}
+
+/* Nav footer (Settings, Give Feedback) */
+.nav-footer {
+  padding: var(--space-2);
+  border-top: 1px solid var(--color-nav-divider);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ─── Main content area ──────────────────────────────────────────── */
+.admin-content {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-surface-card);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Legacy .admin-shell compatibility ──────────────────────────── */
+/* Keeps prototype-shell/index.html and other pages working */
+.admin-shell {
+  display: flex;
+  min-height: 100dvh;
+  background-color: var(--color-surface-app);
+}
+.admin-shell .admin-nav {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: var(--z-sticky);
+  height: auto;
+  overflow-y: auto;
+}
+.admin-shell .admin-content {
+  flex: 1;
+  margin-left: 200px;
+  overflow: visible;
+}
+
+/* ─── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-nav { width: 100%; max-width: 280px; }
+  .app-brand-name { max-width: 140px; }
+}

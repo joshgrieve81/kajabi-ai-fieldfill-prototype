@@ -1,0 +1,70 @@
+/* Kajabi Design System — main entry point
+   Import this single file to get the full system.
+
+   IMPORTANT: All @import rules must precede CSS declarations per the CSS spec.
+   Imports that follow any rule block are silently ignored by browsers. */
+
+/* ─── Tokens ─────────────────────────────────────────────────────── */
+@import './tokens/typography.css';
+@import './tokens/colors.css';
+@import './tokens/spacing.css';
+@import './tokens/radius.css';
+@import './tokens/shadows.css';
+@import './tokens/z-index.css';
+
+/* ─── Components ─────────────────────────────────────────────────── */
+@import './components/button.css';
+@import './components/status-pill.css';
+@import './components/badge.css';
+@import './components/toast.css';
+@import './components/modal.css';
+@import './components/form-field.css';
+@import './components/empty-state.css';
+@import './components/skeleton.css';
+@import './components/row-menu.css';
+@import './components/table.css';
+@import './components/tooltip.css';
+
+/* ─── Layouts ────────────────────────────────────────────────────── */
+@import './layouts/admin-shell.css';
+@import './layouts/page.css';
+@import './layouts/card.css';
+
+/* ─── Reset & base (must follow all @imports) ────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-surface-app);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg { display: block; }
+button { font: inherit; }
+input, select, textarea { font: inherit; }
+a { color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,130 @@
+/* Data table with row hover states and row-level action menus */
+
+.table-wrapper {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-family: var(--font-family-ui);
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table-title {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────── */
+.data-table thead th {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-micro);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+  background-color: var(--color-surface-card);
+}
+
+/* Checkbox column */
+.data-table .col-check {
+  width: 40px;
+  padding-right: 0;
+}
+
+/* Action column */
+.data-table .col-actions {
+  width: 44px;
+  padding-left: 0;
+}
+
+/* ─── Body ───────────────────────────────────────────────────────── */
+.data-table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 80ms ease;
+}
+.data-table tbody tr:last-child {
+  border-bottom: none;
+}
+.data-table tbody tr:hover {
+  background-color: var(--color-surface-card-hover);
+}
+
+.data-table tbody td {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+/* Primary cell — product name, contact name, etc. */
+.data-table .cell-primary {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.data-table .cell-secondary {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.data-table .cell-muted {
+  color: var(--color-text-muted);
+}
+
+/* Row with thumbnail */
+.cell-with-thumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.cell-thumb {
+  width: 40px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-skeleton-base);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ─── Checkbox ───────────────────────────────────────────────────── */
+.table-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--color-brand);
+}
+
+/* ─── Footer / pagination ────────────────────────────────────────── */
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+}
+
+.table-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}

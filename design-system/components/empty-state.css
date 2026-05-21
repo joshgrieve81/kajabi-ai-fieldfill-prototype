@@ -1,0 +1,58 @@
+/* Per design.md: heading + context sentence + single CTA.
+   Not a place for marketing copy. Direct and specific. */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-16) var(--space-8);
+  font-family: var(--font-family-ui);
+}
+
+.empty-state-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-5);
+  color: var(--color-text-muted);
+  opacity: 0.65;
+}
+
+.empty-state-heading {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0 0 var(--space-2);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.empty-state-body {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-6);
+  max-width: 380px;
+  line-height: var(--line-height-relaxed);
+}
+
+/* Single CTA — any btn variant can be placed here */
+.empty-state-action { }
+
+/* Compact variant for widgets or sidebar panels */
+.empty-state-compact {
+  padding: var(--space-8) var(--space-6);
+}
+.empty-state-compact .empty-state-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: var(--space-3);
+}
+.empty-state-compact .empty-state-heading {
+  font-size: var(--font-size-h2);
+  margin-bottom: var(--space-1);
+}
+.empty-state-compact .empty-state-body {
+  font-size: var(--font-size-small);
+  margin-bottom: var(--space-4);
+}

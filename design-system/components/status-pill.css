@@ -1,0 +1,68 @@
+/* Per design.md: always pair color with text — never color alone */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-micro);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  line-height: var(--line-height-tight);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+/* Dot indicator — decorative, color redundant with label text */
+.pill::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: currentColor;
+}
+
+/* ─── Variants ───────────────────────────────────────────────────── */
+.pill-published,
+.pill-active,
+.pill-completed,
+.pill-paid {
+  color: var(--color-success-text);
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success-border);
+}
+
+.pill-error,
+.pill-failed,
+.pill-invalid {
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+}
+
+.pill-draft,
+.pill-pending,
+.pill-paused,
+.pill-scheduled {
+  color: var(--color-warning-text);
+  background-color: var(--color-warning-bg);
+  border-color: var(--color-warning-border);
+}
+
+.pill-info,
+.pill-processing {
+  color: var(--color-info-text);
+  background-color: var(--color-info-bg);
+  border-color: var(--color-info-border);
+}
+
+.pill-inactive,
+.pill-archived,
+.pill-unpublished {
+  color: var(--color-neutral-status);
+  background-color: var(--color-neutral-status-bg);
+  border-color: var(--color-neutral-status-border);
+}

@@ -1,48 +1,45 @@
-# Kajabi AI FieldFill Assistant — Concept Prototype
+# Kajabi FieldFill Agent — Concept Prototype
 
-This is a quick, non-production HTML prototype to communicate the concept of a separate AI assistant/MCP/browser agent that can populate Kajabi admin fields that Kajabi Cofounder cannot directly edit.
+Live concept prototype for a separate AI/MCP/browser agent that can populate Kajabi admin fields that native Cofounder-style AI cannot directly edit.
+
+## Current version
+
+This version was restyled from the previously created Kajabi SaaS design system notes in `/tmp/kajabi/DESIGN.md`:
+
+- Warm gray app canvas: `#F7F7F5`
+- White cards and subtle borders
+- Light persistent left sidebar
+- Black primary CTAs
+- Purple AI/co-pilot treatment
+- Card-based SaaS settings layout
+- Human-in-the-loop save safety
+
+## Important inspection note
+
+The referenced repo `joshgrieve81/creator-platform-starter` is currently public but appears empty on GitHub: no branches, no commits, and no files were available to clone at inspection time. Because of that, this prototype uses the locally available Kajabi-inspired design-system artifact from the earlier Cursor/Kajabi design work rather than copying code from that repo.
 
 ## What it demonstrates
 
-- A Kajabi-like admin/course lesson settings screen
-- Fields for title, description, duration, lesson body, SEO title, and SEO description
+- A Kajabi-inspired product/course lesson settings page
 - A right-side AI assistant panel
-- A “Fill all visible fields” action that populates the form
-- A human-approval save flow concept
+- Field detection/readiness state
+- Generate + fill interaction
+- Section-specific fill actions
+- A review-before-save flow
 
-## How to open
-
-Open `index.html` in a browser:
-
-```bash
-xdg-open /root/kajabi-ai-fieldfill-prototype/index.html
-```
-
-Or serve it locally:
+## How to view locally
 
 ```bash
 cd /root/kajabi-ai-fieldfill-prototype
 python3 -m http.server 4173
 ```
 
-Then visit:
+Then open:
 
 ```text
 http://127.0.0.1:4173
 ```
 
-## Prototype positioning
+## Concept positioning
 
-This is not meant to be a real Kajabi integration yet. It is meant to help explain the product idea:
-
-> Cofounder can generate content, but a separate AI agent can operate the Kajabi admin interface, map generated content to visible fields, populate those fields, and pause before saving.
-
-## Next prototype iteration
-
-A stronger v2 could add:
-
-- A fake browser-agent progress timeline
-- Field-by-field approval
-- Before/after diff view
-- Support for Forms, Offers, Checkout, Course Lessons, and SEO screens
-- More accurate visual matching to Kajabi after referencing screenshots
+> Cofounder can help write content. FieldFill performs the operational step: it identifies fields in the Kajabi admin UI, maps generated content to each field, populates the page, and pauses before save for human approval.

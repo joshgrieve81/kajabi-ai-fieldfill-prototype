@@ -3,209 +3,89 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kajabi AI Field Assistant — Concept Prototype</title>
+  <title>Kajabi FieldFill Agent — Concept Prototype</title>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #f7f6f3;
-      color: #191919;
+    :root{
+      --ink:#111111; --text:#242424; --muted:#6B7280; --subtle:#8A8F98;
+      --canvas:#F7F7F5; --surface:#FFFFFF; --surface-subtle:#FAFAF8;
+      --border:#E6E3DD; --border-strong:#D7D2CA; --purple:#EDE7FF;
+      --pink:#F9DDE4; --blue:#E8F1FF; --green:#EAF7EF; --yellow:#FFF4D8;
+      --focus:#6D5DFB; --success:#16794C; --warning:#7A4B00;
+      --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-xl:16px;
+      --shadow:0 18px 45px rgba(17,17,17,.06);
     }
-    .app { display: grid; grid-template-columns: 248px 1fr 390px; min-height: 100vh; }
-    .sidebar {
-      background: #171717;
-      color: #f6f2ea;
-      padding: 22px 16px;
-      border-right: 1px solid rgba(255,255,255,.08);
-    }
-    .logo { display:flex; align-items:center; gap:10px; font-weight:750; letter-spacing:-.03em; font-size:20px; margin-bottom:28px; }
-    .logo-mark { width:32px; height:32px; border-radius:10px; background:linear-gradient(135deg,#fff4cf,#caa56a); color:#111; display:grid; place-items:center; font-weight:900; }
-    .nav-section { color:#9b968f; font-size:11px; text-transform:uppercase; letter-spacing:.12em; margin:22px 0 8px; }
-    .nav-item { padding:10px 12px; border-radius:10px; display:flex; gap:10px; align-items:center; color:#d9d5cf; font-size:14px; margin:2px 0; }
-    .nav-item.active { background:#2b2926; color:#fff; box-shadow: inset 3px 0 0 #d7b56d; }
-    .main { padding: 24px 34px 44px; overflow:auto; }
-    .crumbs { color:#7a756d; font-size:13px; margin-bottom:18px; }
-    .topbar { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:22px; }
-    h1 { margin:0; font-size:30px; letter-spacing:-.04em; }
-    .sub { margin-top:6px; color:#6e6960; font-size:14px; }
-    .pill { display:inline-flex; align-items:center; gap:8px; border:1px solid #ded8cd; background:#fff; border-radius:999px; padding:8px 12px; font-size:13px; color:#554f47; }
-    .tabs { display:flex; gap:6px; border-bottom:1px solid #ded8cd; margin:18px 0 24px; }
-    .tab { padding:12px 14px; color:#6f6961; font-size:14px; border-bottom:2px solid transparent; }
-    .tab.active { color:#161616; border-color:#151515; font-weight:650; }
-    .panel { background:#fff; border:1px solid #e5dfd4; border-radius:18px; box-shadow:0 10px 30px rgba(50,43,32,.05); margin-bottom:18px; overflow:hidden; }
-    .panel-head { padding:18px 20px; border-bottom:1px solid #eee8df; display:flex; justify-content:space-between; align-items:center; }
-    .panel-title { font-weight:760; letter-spacing:-.02em; }
-    .panel-note { color:#8a8379; font-size:13px; }
-    .form { padding:20px; display:grid; gap:18px; }
-    label { display:block; font-size:13px; font-weight:680; color:#3d3934; margin-bottom:7px; }
-    input, textarea, select {
-      width:100%; border:1px solid #dcd6cc; background:#fffdf9; border-radius:12px; padding:12px 13px;
-      font: inherit; color:#1d1b18; outline:none; transition:.18s ease;
-    }
-    textarea { min-height:96px; resize:vertical; line-height:1.45; }
-    .rich { min-height:150px; }
-    input:focus, textarea:focus, select:focus { border-color:#b28b45; box-shadow:0 0 0 4px rgba(178,139,69,.13); }
-    .field.filled input, .field.filled textarea { background:#fffaf0; border-color:#d1aa60; animation: glow .7s ease; }
-    @keyframes glow { from { box-shadow:0 0 0 0 rgba(209,170,96,.5); } to { box-shadow:0 0 0 10px rgba(209,170,96,0); } }
-    .row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    .savebar { position:sticky; bottom:0; background:rgba(247,246,243,.86); backdrop-filter: blur(12px); padding:14px 0 0; display:flex; justify-content:flex-end; gap:10px; }
-    button { border:0; border-radius:12px; padding:11px 14px; font-weight:720; cursor:pointer; transition:.18s ease; }
-    .secondary { background:#ebe5db; color:#2c2925; }
-    .primary { background:#1d1b18; color:white; }
-    .gold { background:#c69a4d; color:#15110a; }
-    button:hover { transform:translateY(-1px); filter:brightness(.98); }
-    .assistant { background:#fbfaf7; border-left:1px solid #ded8cd; padding:18px; display:flex; flex-direction:column; gap:14px; }
-    .assistant-card { background:#fff; border:1px solid #e5dfd4; border-radius:18px; box-shadow:0 10px 28px rgba(50,43,32,.06); overflow:hidden; }
-    .ai-head { padding:16px; display:flex; gap:12px; align-items:center; border-bottom:1px solid #eee8df; }
-    .spark { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:#171717; color:#f3cf80; }
-    .ai-title { font-weight:800; letter-spacing:-.025em; }
-    .ai-small { color:#766f65; font-size:12px; margin-top:2px; }
-    .chat { padding:16px; display:grid; gap:12px; }
-    .bubble { border-radius:16px; padding:12px; font-size:13px; line-height:1.42; }
-    .user { background:#f1ece3; color:#332f28; }
-    .ai { background:#191919; color:#f8f4ec; }
-    .detected { display:grid; gap:8px; margin-top:8px; }
-    .check { display:flex; align-items:center; justify-content:space-between; padding:9px 10px; background:#f9f5ed; border:1px solid #efe5d4; border-radius:12px; font-size:12px; color:#4d463d; }
-    .check span:last-child { color:#9b7431; font-weight:800; }
-    .promptbox { padding:14px; border-top:1px solid #eee8df; }
-    .promptbox textarea { min-height:112px; background:#fffdf9; }
-    .actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
-    .full { grid-column:1 / -1; }
-    .status { border-radius:14px; background:#f0ece4; padding:12px; color:#5b554d; font-size:13px; line-height:1.4; }
-    .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(30px); background:#171717; color:#fff7e8; padding:12px 16px; border-radius:999px; opacity:0; transition:.25s ease; box-shadow:0 14px 40px rgba(0,0,0,.25); font-size:14px; }
-    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-    @media (max-width:1100px){ .app{grid-template-columns:220px 1fr}.assistant{grid-column:1/-1;border-left:0;border-top:1px solid #ded8cd}.row{grid-template-columns:1fr} }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:var(--canvas);color:var(--text);font-family:Inter,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;}
+    button,input,textarea,select{font:inherit} button{cursor:pointer}
+    .app{min-height:100vh;display:grid;grid-template-columns:248px minmax(680px,1fr) 384px;}
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:18px;}
+    .brand{display:flex;align-items:center;gap:10px;padding:2px 8px 16px;border-bottom:1px solid var(--border)}
+    .mark{width:34px;height:34px;border-radius:10px;background:var(--ink);color:white;display:grid;place-items:center;font-weight:800;letter-spacing:-.04em}.brand strong{font-size:18px;letter-spacing:-.03em}.brand span{font-size:12px;color:var(--muted);display:block;margin-top:1px}.navlabel{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--subtle);font-weight:700;margin:8px 8px 2px}.nav{display:grid;gap:3px}.navitem{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:10px;padding:10px 11px;color:#4b5563;text-decoration:none;font-weight:600}.navitem:hover{background:var(--surface-subtle)}.navitem.active{background:#F0EFEB;color:var(--ink)}.navleft{display:flex;align-items:center;gap:10px}.ico{width:18px;color:#777}.badge{font-size:11px;padding:3px 7px;border-radius:999px;background:var(--purple);color:#4C3FB0;font-weight:700}.account{margin-top:auto;border:1px solid var(--border);background:var(--surface-subtle);border-radius:14px;padding:12px;}.account b{display:block;font-size:13px}.account span{font-size:12px;color:var(--muted)}
+    .main{padding:30px 32px 44px;overflow:auto}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:22px}.breadcrumbs{font-size:13px;color:var(--muted);margin-bottom:10px}.breadcrumbs b{color:var(--text)}h1{margin:0;font-size:30px;line-height:1.2;letter-spacing:-.025em}.dek{margin:8px 0 0;color:var(--muted);line-height:1.45;max-width:760px}.topactions{display:flex;gap:10px;align-items:center}.btn{border:1px solid transparent;border-radius:8px;padding:10px 13px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:8px;transition:.18s ease}.btn:hover{transform:translateY(-1px)}.btn.primary{background:var(--ink);color:white}.btn.secondary{background:var(--surface);border-color:var(--border);color:var(--text)}.btn.ai{background:var(--purple);color:#3d348b}.btn.ghost{background:transparent;border-color:var(--border);color:var(--muted)}.status-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:var(--yellow);color:var(--warning);font-size:12px;font-weight:700}.dot{width:7px;height:7px;border-radius:999px;background:currentColor}.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:20px}.tab{padding:13px 14px;color:var(--muted);font-weight:700;border-bottom:2px solid transparent}.tab.active{color:var(--ink);border-color:var(--ink)}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}.stack{display:grid;gap:16px}.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 1px 0 rgba(17,17,17,.02);overflow:hidden}.cardhead{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px}.cardtitle{font-weight:800;font-size:16px;letter-spacing:-.01em}.cardsub{color:var(--muted);font-size:13px;margin-top:4px;line-height:1.35}.cardbody{padding:20px;display:grid;gap:18px}.field label{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:700;margin-bottom:8px;color:#333}.hint{font-weight:500;color:var(--subtle)}input,textarea,select{width:100%;border:1px solid var(--border-strong);background:var(--surface);border-radius:8px;padding:11px 12px;color:var(--text);outline:none;transition:.18s ease}textarea{min-height:96px;resize:vertical;line-height:1.5}.rich{min-height:190px}input:focus,textarea:focus,select:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(109,93,251,.14)}.field.filled input,.field.filled textarea{background:#FCFBFF;border-color:#BDB4FF;animation:pulse .8s ease}.field.filled label:after{content:'AI filled';font-size:11px;color:#4C3FB0;background:var(--purple);border-radius:999px;padding:3px 7px}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(109,93,251,.3)}100%{box-shadow:0 0 0 12px rgba(109,93,251,0)}}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.asidecard{position:sticky;top:18px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}.progress{padding:16px;display:grid;gap:12px}.meter{height:8px;background:#EEECE7;border-radius:999px;overflow:hidden}.bar{height:100%;width:12%;background:var(--ink);transition:width .4s ease}.checkrow{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding:11px 16px;font-size:13px;color:var(--muted)}.checkrow b{color:var(--text)}.checkrow.done span{color:var(--success);font-weight:800}.preview{background:var(--surface-subtle);border-top:1px solid var(--border);padding:16px}.preview h3{font-size:13px;margin:0 0 8px}.preview p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.assistant{background:var(--surface-subtle);border-left:1px solid var(--border);padding:18px;overflow:auto}.agent{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.agenthead{padding:16px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center}.spark{width:36px;height:36px;border-radius:12px;background:var(--purple);display:grid;place-items:center;color:#4C3FB0;font-weight:900}.agenthead b{font-size:15px}.agenthead span{display:block;color:var(--muted);font-size:12px;margin-top:2px}.chat{padding:16px;display:grid;gap:12px}.bubble{border-radius:14px;padding:12px;line-height:1.45;font-size:13px}.bubble.user{background:#F1EFEA;color:#34302A}.bubble.ai{background:var(--ink);color:white}.detected{display:grid;gap:8px}.detectedrow{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-radius:10px;background:#FCFBFF;border:1px solid #E2DBFF;font-size:12px}.detectedrow span{font-weight:800;color:#4C3FB0}.prompt{padding:14px;border-top:1px solid var(--border);display:grid;gap:10px}.prompt textarea{min-height:130px;background:var(--surface-subtle)}.agentactions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.agentactions .wide{grid-column:1/-1}.explain{margin-top:14px;background:var(--purple);border:1px solid #DDD4FF;border-radius:14px;padding:14px;color:#4B426D;font-size:13px;line-height:1.45}.timeline{margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}.step{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--muted)}.step:last-child{border-bottom:0}.num{width:22px;height:22px;border-radius:999px;background:#EEECE7;color:#777;display:grid;place-items:center;font-size:11px;font-weight:800;flex:0 0 auto}.step.done .num{background:var(--green);color:var(--success)}.step.done{color:var(--text)}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:white;padding:12px 16px;border-radius:999px;font-weight:700;font-size:13px;box-shadow:0 18px 45px rgba(17,17,17,.22);transition:.22s ease}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:1180px){.app{grid-template-columns:230px 1fr}.assistant{grid-column:1/-1;border-left:0;border-top:1px solid var(--border)}.layout{grid-template-columns:1fr}.asidecard{position:static}.two{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="logo"><div class="logo-mark">K</div><div>Kajabi</div></div>
-      <div class="nav-section">Create</div>
-      <div class="nav-item active">▣ Products</div>
-      <div class="nav-item">▤ Courses</div>
-      <div class="nav-item">◈ Coaching</div>
-      <div class="nav-section">Sell</div>
-      <div class="nav-item">◉ Offers</div>
-      <div class="nav-item">▧ Forms</div>
-      <div class="nav-item">◇ Payments</div>
-      <div class="nav-section">Website</div>
-      <div class="nav-item">▥ Pages</div>
-      <div class="nav-item">⚙ Settings</div>
+      <div class="brand"><div class="mark">K</div><div><strong>Kajabi</strong><span>Creator platform</span></div></div>
+      <div><div class="navlabel">Dashboard</div><nav class="nav">
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">⌂</span> Home</span></a>
+        <a class="navitem active" href="#"><span class="navleft"><span class="ico">▦</span> Products</span><span class="badge">AI</span></a>
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">◉</span> Offers</span></a>
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">▧</span> Forms</span></a>
+      </nav></div>
+      <div><div class="navlabel">Marketing</div><nav class="nav">
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">◫</span> Website</span></a>
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">✉</span> Email</span></a>
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">◇</span> Funnels</span></a>
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">⚙</span> Automations</span></a>
+      </nav></div>
+      <div><div class="navlabel">Manage</div><nav class="nav">
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">◌</span> Contacts</span></a>
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">▣</span> Analytics</span></a>
+        <a class="navitem" href="#"><span class="navleft"><span class="ico">⚙</span> Settings</span></a>
+      </nav></div>
+      <div class="account"><b>Josh's Site</b><span>Draft course workspace</span></div>
     </aside>
 
     <main class="main">
-      <div class="crumbs">Products / Digital Course / Lessons / Settings</div>
-      <div class="topbar">
-        <div>
-          <h1>Lesson settings</h1>
-          <div class="sub">Prototype: AI fills the Kajabi fields Cofounder currently cannot directly edit.</div>
-        </div>
-        <div class="pill">Draft changes • not saved</div>
+      <div class="top">
+        <div><div class="breadcrumbs">Products / <b>Founder Clarity System</b> / Lessons / Settings</div><h1>Lesson settings</h1><p class="dek">A Kajabi-inspired concept: a separate AI agent detects editable admin fields, maps your brief to the right places, fills the form, then pauses for human approval before saving.</p></div>
+        <div class="topactions"><span class="status-pill"><i class="dot"></i> Unsaved draft</span><button class="btn secondary" onclick="resetDemo()">Reset</button><button class="btn primary" onclick="toast('Prototype paused before Save — review required')">Save changes</button></div>
       </div>
-      <div class="tabs">
-        <div class="tab">Content</div><div class="tab active">Settings</div><div class="tab">SEO & Sharing</div><div class="tab">Automations</div>
+      <div class="tabs"><div class="tab">Content</div><div class="tab active">Settings</div><div class="tab">SEO & Sharing</div><div class="tab">Automations</div><div class="tab">Access</div></div>
+      <div class="layout">
+        <div class="stack">
+          <section class="card"><div class="cardhead"><div><div class="cardtitle">Basic information</div><div class="cardsub">Visible to students inside the course product.</div></div><button class="btn ai" onclick="fillSection(['title','description','duration'])">Fill section</button></div><div class="cardbody">
+            <div class="field" data-field="title"><label>Lesson title <span class="hint">Required</span></label><input placeholder="Give this lesson a clear title"></div>
+            <div class="field" data-field="description"><label>Short description <span class="hint">Shown in lesson overview</span></label><textarea placeholder="Briefly explain what students will learn."></textarea></div>
+            <div class="two"><div class="field"><label>Publish status</label><select><option>Draft</option><option>Published</option></select></div><div class="field" data-field="duration"><label>Estimated duration</label><input placeholder="Example: 8 minutes"></div></div>
+          </div></section>
+          <section class="card"><div class="cardhead"><div><div class="cardtitle">Lesson content</div><div class="cardsub">The agent can populate long-form lesson copy, action steps, and homework prompts.</div></div><button class="btn ai" onclick="fillSection(['body'])">Draft body</button></div><div class="cardbody"><div class="field" data-field="body"><label>Body content <span class="hint">Rich text editor</span></label><textarea class="rich" placeholder="Write lesson content, key takeaways, prompts, or homework here."></textarea></div></div></section>
+          <section class="card"><div class="cardhead"><div><div class="cardtitle">SEO and social sharing</div><div class="cardsub">Buried but important fields that often get skipped during course creation.</div></div><button class="btn ai" onclick="fillSection(['seoTitle','seoDescription'])">Optimize</button></div><div class="cardbody"><div class="field" data-field="seoTitle"><label>SEO title <span class="hint">60 characters max</span></label><input placeholder="Search result title"></div><div class="field" data-field="seoDescription"><label>SEO description <span class="hint">Search/social preview</span></label><textarea placeholder="Write a concise search/social description."></textarea></div></div></section>
+        </div>
+        <aside class="asidecard"><div class="cardhead"><div><div class="cardtitle">Field readiness</div><div class="cardsub">6 detected fields</div></div></div><div class="progress"><div class="meter"><div class="bar" id="bar"></div></div><div id="readycopy" class="cardsub">Ready to apply generated content.</div></div><div class="checkrow" data-check="title"><b>Lesson title</b><span>Ready</span></div><div class="checkrow" data-check="description"><b>Description</b><span>Ready</span></div><div class="checkrow" data-check="duration"><b>Duration</b><span>Ready</span></div><div class="checkrow" data-check="body"><b>Body content</b><span>Ready</span></div><div class="checkrow" data-check="seoTitle"><b>SEO title</b><span>Ready</span></div><div class="checkrow" data-check="seoDescription"><b>SEO description</b><span>Ready</span></div><div class="preview"><h3>Human-in-the-loop safety</h3><p>The prototype intentionally stops at “filled fields.” A real version would require explicit approval before clicking Kajabi’s save button.</p></div></aside>
       </div>
-
-      <section class="panel">
-        <div class="panel-head"><div><div class="panel-title">Basic information</div><div class="panel-note">Visible to students inside the course experience.</div></div></div>
-        <div class="form">
-          <div class="field" data-field="title"><label>Lesson title</label><input value="" placeholder="Example: The 5-Minute Morning Reset" /></div>
-          <div class="field" data-field="description"><label>Short description</label><textarea placeholder="Briefly explain what students will learn in this lesson."></textarea></div>
-          <div class="row">
-            <div class="field"><label>Publish status</label><select><option>Draft</option><option>Published</option></select></div>
-            <div class="field" data-field="duration"><label>Estimated duration</label><input placeholder="8 minutes" /></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-head"><div><div class="panel-title">Lesson body</div><div class="panel-note">Rich text content for the course lesson.</div></div></div>
-        <div class="form">
-          <div class="field" data-field="body"><label>Lesson content</label><textarea class="rich" placeholder="Write lesson content, key takeaways, prompts, or homework here."></textarea></div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-head"><div><div class="panel-title">SEO and sharing</div><div class="panel-note">Usually buried fields that are easy to forget.</div></div></div>
-        <div class="form">
-          <div class="field" data-field="seoTitle"><label>SEO title</label><input placeholder="Search result title" /></div>
-          <div class="field" data-field="seoDescription"><label>SEO description</label><textarea placeholder="Search/social preview description"></textarea></div>
-        </div>
-      </section>
-
-      <div class="savebar"><button class="secondary" onclick="resetDemo()">Reset demo</button><button class="primary" onclick="toast('Prototype paused before save — human approval required')">Save draft</button></div>
     </main>
 
     <aside class="assistant">
-      <div class="assistant-card">
-        <div class="ai-head"><div class="spark">✦</div><div><div class="ai-title">FieldFill Assistant</div><div class="ai-small">Separate AI agent connected to Kajabi tools</div></div></div>
-        <div class="chat">
-          <div class="bubble user">Create a lesson settings page for a short module about building a morning clarity ritual for busy founders.</div>
-          <div class="bubble ai">I found 6 editable fields on this page. I can draft optimized copy, populate them, and stop before saving.</div>
-          <div class="detected">
-            <div class="check">Lesson title <span>ready</span></div>
-            <div class="check">Short description <span>ready</span></div>
-            <div class="check">Lesson body <span>ready</span></div>
-            <div class="check">Duration <span>ready</span></div>
-            <div class="check">SEO title <span>ready</span></div>
-            <div class="check">SEO description <span>ready</span></div>
-          </div>
-        </div>
-        <div class="promptbox">
-          <textarea id="brief">Audience: overwhelmed founders and creators. Tone: calm, direct, premium. Outcome: help them design a 5-minute morning ritual that clarifies the day's top priority.</textarea>
-          <div class="actions">
-            <button class="gold full" onclick="fillFields()">Fill all visible fields</button>
-            <button class="secondary" onclick="previewPlan()">Preview mapping</button>
-            <button class="primary" onclick="toast('In a real build, this would call browser/MCP tools')">Run agent</button>
-          </div>
-        </div>
-      </div>
-      <div class="status" id="status"><strong>Concept:</strong> Cofounder can draft content, but this separate assistant operates the Kajabi admin UI and fills fields that native AI cannot touch.</div>
+      <div class="agent"><div class="agenthead"><div class="spark">✦</div><div><b>FieldFill Agent</b><span>External AI + MCP/browser automation concept</span></div></div><div class="chat"><div class="bubble user">Create a premium lesson settings page for founders who need a 5-minute morning clarity ritual.</div><div class="bubble ai">I scanned this page and found 6 fields I can safely populate. I’ll map your brief to each field and stop before saving.</div><div class="detected"><div class="detectedrow">Visible form fields <span>6 found</span></div><div class="detectedrow">Hidden save action <span>approval required</span></div><div class="detectedrow">Kajabi API fallback <span>optional</span></div></div></div><div class="prompt"><textarea id="brief">Audience: overwhelmed founders and creators. Tone: calm, direct, premium. Outcome: help them design a 5-minute morning ritual that clarifies the day's top priority before inbox/reactive work takes over.</textarea><div class="agentactions"><button class="btn ai wide" onclick="fillAll()">Generate + fill all fields</button><button class="btn secondary" onclick="previewMapping()">Preview mapping</button><button class="btn primary" onclick="toast('In a real build, this would call Kajabi browser/MCP tools')">Run agent</button></div></div></div>
+      <div class="explain" id="explain"><b>Concept message:</b> Cofounder can help write, but this companion agent performs the operational step: it finds fields in Kajabi admin, inserts content, and asks for review.</div>
+      <div class="timeline"><div class="step done"><div class="num">1</div><div>Detect visible inputs and editor fields</div></div><div class="step" id="step2"><div class="num">2</div><div>Map creator brief to field-specific copy</div></div><div class="step" id="step3"><div class="num">3</div><div>Populate Kajabi fields without saving</div></div><div class="step" id="step4"><div class="num">4</div><div>Show review state and request approval</div></div></div>
     </aside>
-  </div>
-  <div id="toast" class="toast"></div>
-
+  </div><div id="toast" class="toast"></div>
 <script>
-  const values = {
-    title: 'The 5-Minute Morning Clarity Ritual',
-    description: 'A simple daily reset that helps founders choose the one priority that matters before the day becomes reactive.',
-    duration: '5–8 minutes',
-    body: 'In this lesson, you will build a repeatable morning ritual designed for busy founders and creators.\n\n1. Start with a 60-second brain dump of everything competing for attention.\n2. Circle the one outcome that would make today feel successful.\n3. Write the first concrete action that moves that outcome forward.\n4. Protect a 25-minute focus block before checking messages.\n\nBy the end, you will have a lightweight clarity practice you can repeat every morning without adding complexity to your schedule.',
-    seoTitle: '5-Minute Morning Clarity Ritual for Founders',
-    seoDescription: 'Learn a calm, practical morning ritual for choosing your top priority, reducing reactivity, and starting the day with focused momentum.'
-  };
-  function fillFields(){
-    Object.entries(values).forEach(([key, value], i) => {
-      setTimeout(() => {
-        const field = document.querySelector(`[data-field="${key}"]`);
-        const input = field && field.querySelector('input, textarea');
-        if(input){ input.value = value; field.classList.add('filled'); }
-      }, i * 260);
-    });
-    document.getElementById('status').innerHTML = '<strong>Applied:</strong> 6 fields populated. Next step: show a screenshot diff and ask for approval before clicking Save.';
-    toast('AI populated 6 fields and paused before save');
-  }
-  function previewPlan(){
-    document.getElementById('status').innerHTML = '<strong>Preview mapping:</strong> outline → title, positioning → description, lesson steps → body, outcome keywords → SEO fields.';
-    toast('Previewing field mapping');
-  }
-  function resetDemo(){
-    document.querySelectorAll('[data-field]').forEach(field => {
-      const input = field.querySelector('input, textarea');
-      if(input) input.value = '';
-      field.classList.remove('filled');
-    });
-    document.getElementById('status').innerHTML = '<strong>Concept:</strong> Cofounder can draft content, but this separate assistant operates the Kajabi admin UI and fills fields that native AI cannot touch.';
-    toast('Demo reset');
-  }
-  function toast(msg){
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 2200);
-  }
+  const values={title:'The 5-Minute Morning Clarity Ritual',description:'A calm, practical reset that helps founders identify the one priority that matters before the day becomes reactive.',duration:'5–8 minutes',body:'In this lesson, you will build a repeatable morning ritual designed for busy founders and creators.\n\nStep 1: Spend 60 seconds writing down every open loop competing for your attention.\n\nStep 2: Choose the single outcome that would make today feel successful.\n\nStep 3: Write the first physical action that moves that outcome forward.\n\nStep 4: Protect one 25-minute focus block before opening your inbox or messages.\n\nBy the end, you will have a lightweight clarity practice that creates momentum without adding more complexity to your morning.',seoTitle:'5-Minute Morning Clarity Ritual for Founders',seoDescription:'Build a simple morning ritual for choosing your top priority, reducing reactive work, and starting each day with focused momentum.'};
+  const keys=Object.keys(values);
+  function setField(k){const f=document.querySelector(`[data-field="${k}"]`); if(!f)return; const el=f.querySelector('input,textarea'); if(el){el.value=values[k]; f.classList.add('filled')} const c=document.querySelector(`[data-check="${k}"]`); if(c){c.classList.add('done'); c.querySelector('span').textContent='Filled';} updateProgress();}
+  function fillSection(list){list.forEach((k,i)=>setTimeout(()=>setField(k),i*180)); setTimeout(()=>{document.getElementById('step2').classList.add('done');document.getElementById('step3').classList.add('done');toast('Section fields populated')},list.length*190)}
+  function fillAll(){keys.forEach((k,i)=>setTimeout(()=>setField(k),i*220)); setTimeout(()=>{['step2','step3','step4'].forEach(id=>document.getElementById(id).classList.add('done')); document.getElementById('explain').innerHTML='<b>Review state:</b> 6 fields populated. The agent is paused before Save so the creator can approve, edit, or regenerate.'; toast('6 fields filled — review before saving');},keys.length*230)}
+  function updateProgress(){const done=document.querySelectorAll('.checkrow.done').length; document.getElementById('bar').style.width=Math.max(12,done/6*100)+'%'; document.getElementById('readycopy').textContent=done?`${done} of 6 fields filled. Review before saving.`:'Ready to apply generated content.';}
+  function previewMapping(){document.getElementById('explain').innerHTML='<b>Preview mapping:</b> audience + outcome → title/description, lesson structure → body content, business keywords → SEO title and meta description.'; document.getElementById('step2').classList.add('done'); toast('Field mapping previewed');}
+  function resetDemo(){document.querySelectorAll('[data-field]').forEach(f=>{const el=f.querySelector('input,textarea'); if(el)el.value=''; f.classList.remove('filled')});document.querySelectorAll('.checkrow').forEach(c=>{c.classList.remove('done'); c.querySelector('span').textContent='Ready'});['step2','step3','step4'].forEach(id=>document.getElementById(id).classList.remove('done'));document.getElementById('explain').innerHTML='<b>Concept message:</b> Cofounder can help write, but this companion agent performs the operational step: it finds fields in Kajabi admin, inserts content, and asks for review.';updateProgress();toast('Prototype reset')}
+  function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 </script>
 </body>
 </html>
